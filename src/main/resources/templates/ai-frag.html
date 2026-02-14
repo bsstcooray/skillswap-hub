@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="fw-bold mb-0">Gemini Helper</h2>
+      <div class="text-muted">Try a prompt like “Write a polite exchange request message” or “Summarize my skill”.</div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-6">
+      <div class="card p-4">
+        <form id="aiForm" class="vstack gap-3">
+          <div>
+            <label class="form-label">Prompt</label>
+            <textarea class="form-control" id="prompt" rows="6" placeholder="Ask Gemini..."></textarea>
+            <div class="form-text">Requires setting <code>spring.ai.google.genai.api-key / GEMINI_API_KEY</code> in application.properties.</div>
+          </div>
+          <button class="btn btn-primary" type="submit"><i class="bi bi-stars me-2"></i>Generate</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-4">
+        <h5 class="fw-bold">Response</h5>
+        <pre id="aiOut" class="bg-light p-3 rounded-4 mb-0" style="white-space:pre-wrap;">(response will appear here)</pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+document.getElementById('aiForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const prompt = document.getElementById('prompt').value.trim();
+  if(!prompt){ return; }
+  const out = document.getElementById('aiOut');
+  out.textContent = "Loading...";
+
+  const tokenEl = document.querySelector('meta[name="_csrf"]');
+  const headerEl = document.querySelector('meta[name="_csrf_header"]');
+  const csrfToken = tokenEl ? tokenEl.getAttribute('content') : null;
+  const csrfHeader = headerEl ? headerEl.getAttribute('content') : null;
+
+  const res = await fetch('/ai/generate', {
+    method:'POST',
+    credentials: 'same-origin',
+    headers:{
+      'Content-Type':'application/json',
+      ...(csrfToken && csrfHeader ? {[csrfHeader]: csrfToken} : {})
+    },
+    body: JSON.stringify({prompt})
+  });
+
+  if(!res.ok){
+    const err = await res.text().catch(()=> '');
+    out.textContent = "Error: " + res.status + " " + res.statusText + "\n" + err;
+    return;
+  }
+
+  const data = await res.json();
+  out.textContent = data?.aiResponse ?? "";
+});
+
+</script>
+</div>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body th:fragment="navbar">
+<nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" th:href="@{/}">
+      <span class="brand-dot me-2"></span>SkillSwap Hub
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" th:href="@{/ui/skills}">Skills</a></li>
+        <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+          <a class="nav-link" th:href="@{/ui/exchanges}">Exchanges</a>
+        </li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <div class="text-white-50 small d-none d-lg-block"
+             th:if="${#authorization.expression('isAuthenticated()')}">
+          Signed in as <span class="text-white fw-semibold" th:text="${#authentication.name}">user</span>
+        </div>
+
+        <a class="btn btn-outline-light btn-sm"
+           th:if="${#authorization.expression('isAnonymous()')}"
+           th:href="@{/login}">Login</a>
+
+        <a class="btn btn-light btn-sm"
+           th:if="${#authorization.expression('isAnonymous()')}"
+           th:href="@{/register}">Create account</a>
+
+        <form th:if="${#authorization.expression('isAuthenticated()')}"
+              th:action="@{/logout}" method="post" class="m-0">
+          <button class="btn btn-outline-light btn-sm" type="submit">Logout</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>
+</body>
+</html>

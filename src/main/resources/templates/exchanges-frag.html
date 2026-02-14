@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="fw-bold mb-0">My exchanges</h2>
+      <div class="text-muted">Incoming requests are for you to accept. Outgoing are requests you sent.</div>
+    </div>
+  </div>
+
+  <ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+      <a class="nav-link" th:classappend="${tab == 'incoming'} ? 'active'" th:href="@{/exchanges(tab='incoming')}">Incoming</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:classappend="${tab == 'outgoing'} ? 'active'" th:href="@{/exchanges(tab='outgoing')}">Outgoing</a>
+    </li>
+  </ul>
+
+  <div class="card p-3">
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requester</th>
+          <th>Receiver</th>
+          <th>Status</th>
+          <th>Proposed</th>
+          <th class="text-end">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ex : ${page.content}">
+          <td th:text="${ex.id}">1</td>
+          <td th:text="${ex.requester}">req</td>
+          <td th:text="${ex.receiver}">rec</td>
+          <td>
+            <span class="badge bg-secondary" th:text="${ex.status}">PENDING</span>
+          </td>
+          <td th:text="${ex.proposedTime != null ? #temporals.format(ex.proposedTime,'yyyy-MM-dd HH:mm') : '-'}">-</td>
+          <td class="text-end">
+            <form th:action="@{'/exchanges/' + ${ex.id} + '/accept'}" method="post" class="d-inline" th:if="${tab == 'incoming' && ex.status == 'PENDING'}">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+              <button class="btn btn-sm btn-primary" type="submit">Accept</button>
+            </form>
+            <form th:action="@{'/exchanges/' + ${ex.id} + '/complete'}" method="post" class="d-inline" th:if="${ex.status == 'ACCEPTED'}">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+              <button class="btn btn-sm btn-outline-primary" type="submit">Complete</button>
+            </form>
+            <form th:action="@{'/exchanges/' + ${ex.id} + '/cancel'}" method="post" class="d-inline" th:if="${ex.status != 'COMPLETED'}">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+              <button class="btn btn-sm btn-outline-primary" type="submit">Cancel</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${page.content.size() == 0}">
+          <td colspan="6" class="text-center text-muted py-4">No exchanges yet.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center mt-4" th:if="${page.totalPages > 1}">
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" th:classappend="${page.first} ? 'disabled'">
+          <a class="page-link" th:href="@{/exchanges(tab=${tab}, page=${page.number-1}, size=${page.size})}">Prev</a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, page.totalPages-1)}"
+            th:classappend="${i == page.number} ? 'active'">
+          <a class="page-link" th:href="@{/exchanges(tab=${tab}, page=${i}, size=${page.size})}" th:text="${i+1}">1</a>
+        </li>
+        <li class="page-item" th:classappend="${page.last} ? 'disabled'">
+          <a class="page-link" th:href="@{/exchanges(tab=${tab}, page=${page.number+1}, size=${page.size})}">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

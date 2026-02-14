@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('New Exchange • SkillSwap Hub')"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main class="container my-4" style="max-width: 900px;">
+  <div class="alert alert-success py-2" th:if="${success}">
+    <span th:text="${success}">Success</span>
+  </div>
+  <div class="alert alert-danger py-2" th:if="${error}">
+    <span th:text="${error}">Error</span>
+  </div>
+
+  <div class="card card-soft p-4">
+    <h1 class="h4 fw-bold mb-1">Create an exchange request</h1>
+    <p class="text-muted small mb-4">
+      Choose what you offer, what you want, and who you’re requesting from.
+    </p>
+
+    <div class="alert alert-danger py-2" th:if="${error}">
+      <span th:text="${error}">Error</span>
+    </div>
+
+    <form th:action="@{/ui/exchanges}" method="post" class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Receiver username</label>
+        <input class="form-control" name="receiverUsername" placeholder="e.g. bob" required/>
+        <div class="form-text">The user you are requesting the skill from.</div>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Offered skill</label>
+        <select class="form-select" name="offeredSkillId" required>
+          <option th:each="s : ${skills}" th:value="${s.id}" th:text="${s.name}">Skill</option>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Requested skill</label>
+        <select class="form-select" name="requestedSkillId" required>
+          <option th:each="s : ${skills}" th:value="${s.id}" th:text="${s.name}"
+                  th:selected="${requestedSkillId != null && requestedSkillId == s.id}">Skill</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Proposed time (optional)</label>
+        <input class="form-control" name="proposedTime" placeholder="2026-02-05T18:00"/>
+        <div class="form-text">Format: yyyy-MM-ddTHH:mm (example: 2026-02-05T18:00)</div>
+      </div>
+
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-brand text-white" type="submit">Send request</button>
+        <a class="btn btn-outline-secondary" th:href="@{/ui/exchanges}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

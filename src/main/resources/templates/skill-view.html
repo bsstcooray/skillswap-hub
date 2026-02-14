@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Skill Details • SkillSwap Hub')"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main class="container my-4" style="max-width: 920px;">
+  <div class="alert alert-success py-2" th:if="${success}">
+    <span th:text="${success}">Success</span>
+  </div>
+  <div class="alert alert-danger py-2" th:if="${error}">
+    <span th:text="${error}">Error</span>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h1 class="h3 fw-bold mb-0" th:text="${skill.name}">Skill</h1>
+      <div class="text-muted small">
+        <span th:text="${skill.category}">Category</span>
+        • <span class="badge badge-soft" th:text="${skill.difficulty}">BEGINNER</span>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-secondary" th:href="@{/ui/skills}">Back</a>
+      <a class="btn btn-brand text-white"
+         th:if="${#authorization.expression('isAuthenticated()')}"
+         th:href="@{/ui/exchanges/new(requestedSkillId=${skill.id})}">Request this skill</a>
+    </div>
+  </div>
+
+  <div class="card card-soft p-4">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="text-muted small">Skill ID</div>
+        <div class="fw-semibold" th:text="${skill.id}">1</div>
+      </div>
+      <div class="col-md-6">
+        <div class="text-muted small">Attachment</div>
+        <div>
+          <span th:if="${skill.attachmentPath == null}" class="text-muted">None</span>
+          <a th:if="${skill.attachmentPath != null}"
+             th:href="@{${skill.attachmentPath}}"
+             target="_blank">Open attachment</a>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4"/>
+
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="text-muted small">Want to propose an exchange? Use “Request this skill”.</div>
+
+      <form th:if="${#authorization.expression('isAuthenticated()')}"
+            th:action="@{/ui/skills/{id}/delete(id=${skill.id})}" method="post" class="m-0">
+        <button class="btn btn-sm btn-outline-danger" type="submit">Soft delete</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

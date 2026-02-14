@@ -1,0 +1,8 @@
+<footer th:fragment="footer" class="py-4">
+  <div class="container footer">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+      <div class="small">© <span th:text="${#dates.format(#dates.createNow(),'yyyy')}">2026</span> SkillSwap Hub • Built with Spring Boot</div>
+      <div class="small">Tip: Browse publicly, but login to offer skills & manage exchanges.</div>
+    </div>
+  </div>
+</footer>

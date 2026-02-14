@@ -1,0 +1,56 @@
+<div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="fw-bold mb-0">Admin Dashboard</h2>
+      <div class="text-muted">Overview and reports.</div>
+    </div>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-secondary" href="/admin/users"><i class="bi bi-people me-2"></i>Manage Users</a>
+      <a class="btn btn-outline-primary" href="/admin/exchanges/export.csv"><i class="bi bi-download me-2"></i>Export Exchanges CSV</a>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <div class="card p-4">
+        <div class="text-muted">Total Users</div>
+        <div class="display-6 fw-bold" th:text="${userCount}">0</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4">
+        <div class="text-muted">Total Exchanges</div>
+        <div class="display-6 fw-bold" th:text="${exchangeCount}">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-4">
+    <h5 class="fw-bold mb-3">Recent Exchanges</h5>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Requester</th>
+            <th>Receiver</th>
+            <th>Status</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="ex : ${recentExchanges}">
+            <td th:text="${ex.id}">1</td>
+            <td th:text="${ex.requester.username}">alice</td>
+            <td th:text="${ex.receiver.username}">bob</td>
+            <td><span class="badge text-bg-secondary" th:text="${ex.status}">PENDING</span></td>
+            <td th:text="${#temporals.format(ex.createdAt, 'yyyy-MM-dd HH:mm')}">2026-02-04</td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(recentExchanges)}">
+            <td colspan="5" class="text-muted">No exchanges yet.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

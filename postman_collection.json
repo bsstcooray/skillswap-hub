@@ -1,0 +1,36 @@
+{
+  "info": {
+    "name": "SkillSwap Hub API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/auth/register"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"alice\",\n  \"email\": \"alice@test.com\",\n  \"password\": \"Password123!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "List Skills",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:8080/api/skills?page=0&size=10"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <a class="text-decoration-none small" th:href="@{/skills}"><i class="bi bi-arrow-left me-1"></i>Back</a>
+      <h2 class="fw-bold mb-0" th:text="${mode == 'edit'} ? 'Edit skill' : 'Offer a new skill'">Offer a new skill</h2>
+      <div class="text-muted">Use categories like Music, Career, Tech, Fitness, Languages.</div>
+    </div>
+  </div>
+
+  <div class="card p-4">
+    <form th:action="${mode == 'edit'} ? @{'/skills/' + ${skillId} + '/edit'} : @{/skills/new}" method="post" enctype="multipart/form-data" class="row g-3">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+      <div class="col-md-6">
+        <label class="form-label">Skill name</label>
+        <input class="form-control" name="name" th:value="${form.name}" placeholder="e.g., Basic Guitar Chords" required maxlength="120">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Category</label>
+        <input class="form-control" name="category" th:value="${form.category}" placeholder="e.g., Music" required maxlength="60">
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label">Difficulty</label>
+        <select class="form-select" name="difficulty" required>
+          <option value="BEGINNER" th:selected="${form.difficulty == 'BEGINNER'}">BEGINNER</option>
+          <option value="INTERMEDIATE" th:selected="${form.difficulty == 'INTERMEDIATE'}">INTERMEDIATE</option>
+          <option value="ADVANCED" th:selected="${form.difficulty == 'ADVANCED'}">ADVANCED</option>
+        </select>
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Attachment (optional)</label>
+        <input class="form-control" type="file" name="file">
+        <div class="form-text">Upload a PDF/image if you want (stored in /uploads/).</div>
+      </div>
+
+      <div class="col-12 d-flex gap-2">
+        <button class="btn btn-primary" type="submit"><i class="bi bi-check2-circle me-2"></i>Save</button>
+        <a class="btn btn-outline-primary" th:href="@{/skills}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

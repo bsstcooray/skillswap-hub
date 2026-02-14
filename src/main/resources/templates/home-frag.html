@@ -1,0 +1,54 @@
+<div class="hero p-4 p-md-5 mb-4">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-7">
+      <h1 class="display-6 fw-bold mb-2">Swap skills. Build community. Learn faster.</h1>
+      <p class="lead mb-3">Offer what you know (guitar, coding, interview prep) and request what you need (Excel, design, math). No money — just mutual growth.</p>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-light btn-lg" th:href="@{/skills}"><i class="bi bi-search me-2"></i>Browse skills</a>
+        <a class="btn btn-outline-light btn-lg" sec:authorize="isAuthenticated()" th:href="@{/skills/new}"><i class="bi bi-plus-circle me-2"></i>Offer a skill</a>
+        <a class="btn btn-outline-light btn-lg" sec:authorize="!isAuthenticated()" th:href="@{/register}"><i class="bi bi-person-plus me-2"></i>Create account</a>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card p-3 p-md-4">
+        <h5 class="fw-bold mb-3">How it works</h5>
+        <ol class="mb-0">
+          <li class="mb-2">Offer a skill you can teach.</li>
+          <li class="mb-2">Pick a skill you want from someone else.</li>
+          <li class="mb-2">Send an exchange request with a proposed time.</li>
+          <li>Track status changes (Pending → Accepted → Completed).</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card card-hover h-100 p-4">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <span class="badge badge-soft rounded-pill px-3 py-2"><i class="bi bi-shield-check me-1"></i>Secure</span>
+      </div>
+      <h5 class="fw-bold">Session login + roles</h5>
+      <p class="mb-0 text-muted">Form login creates a session cookie. Protected routes require authentication.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-hover h-100 p-4">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <span class="badge badge-soft rounded-pill px-3 py-2"><i class="bi bi-funnel me-1"></i>Explore</span>
+      </div>
+      <h5 class="fw-bold">Search + pagination</h5>
+      <p class="mb-0 text-muted">Filter skills by category/difficulty and paginate results.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-hover h-100 p-4">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <span class="badge badge-soft-accent rounded-pill px-3 py-2"><i class="bi bi-clock-history me-1"></i>Audit</span>
+      </div>
+      <h5 class="fw-bold">Audit trail + scheduler</h5>
+      <p class="mb-0 text-muted">Key actions are logged. A scheduler simulates reminders for upcoming sessions.</p>
+    </div>
+  </div>
+</div>

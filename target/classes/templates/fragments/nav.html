@@ -1,0 +1,41 @@
+<nav th:fragment="nav" class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand brand-badge" th:href="@{/}">
+      <span class="brand-dot"></span>
+      <span>SkillSwap Hub</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" th:href="@{/skills}"><i class="bi bi-grid-3x3-gap me-1"></i>Browse Skills</a></li>
+        <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/exchanges}"><i class="bi bi-arrow-left-right me-1"></i>My Exchanges</a></li>
+        <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/skills/new}"><i class="bi bi-plus-circle me-1"></i>Offer a Skill</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/ai}"><i class="bi bi-stars me-1"></i>Gemini Helper</a></li>
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')"><a class="nav-link" th:href="@{/admin}"><i class="bi bi-shield-lock me-1"></i>Admin</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <!-- Light/Dark mode toggle (Bootstrap 5.3 data-bs-theme) -->
+        <button type="button" class="btn btn-outline-secondary btn-sm" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <i class="bi bi-moon-stars" id="themeIcon"></i>
+        </button>
+
+        <div class="small text-muted" sec:authorize="isAuthenticated()">
+          Signed in as <span class="fw-semibold" sec:authentication="name">user</span>
+        </div>
+
+        <a class="btn btn-outline-primary btn-sm" sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
+        <a class="btn btn-primary btn-sm" sec:authorize="!isAuthenticated()" th:href="@{/register}">Create account</a>
+
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="m-0">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+          <button class="btn btn-outline-primary btn-sm" type="submit"><i class="bi bi-box-arrow-right me-1"></i>Logout</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>
